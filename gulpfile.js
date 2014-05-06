@@ -155,3 +155,6 @@ gulp.task('html', function () {
 
 // GLOBAL TASKS ---------------------------------------------------------------
 gulp.task('default', [ 'html', 'sass', 'coffee' ]);
+
+
+module.exports = gulp;
