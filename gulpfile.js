@@ -51,9 +51,9 @@ var options = {
 // SASS -----------------------------------------------------------------------
 gulp.task('sass', function() {
   gulp.src( options.SASS.src )
-    .pipe(watch({
-      name: "Sass"
-    }))
+    // .pipe(watch({
+    //   name: "Sass"
+    // }))
     .pipe(plumber())
     .pipe(sass({
       outputStyle: 'compressed'
@@ -71,9 +71,9 @@ gulp.task('sass', function() {
 // COFFEESCRIPT ---------------------------------------------------------------
 gulp.task('coffee', function () {
   gulp.src( options.COFFEE.src )
-    .pipe(watch({
-      name: "Coffee"
-    }))
+    // .pipe(watch({
+    //   name: "Coffee"
+    // }))
     // .pipe(changed( options.COFFEE_BUILD , { extension: '.js' }))
     .pipe(coffeelint())
     .pipe(coffeelint.reporter())
@@ -91,9 +91,9 @@ gulp.task('coffee', function () {
 // COMPONENT ------------------------------------------------------------------
 gulp.task('component-js', function () {
   gulp.src( options.COMPONENT.manifest )
-    .pipe(watch({
-      name: "ComponentJS"
-    }))
+    // .pipe(watch({
+    //   name: "ComponentJS"
+    // }))
     .pipe(component.scripts({
       standalone: false,
       configure: function (builder) {
@@ -105,9 +105,9 @@ gulp.task('component-js', function () {
 
 gulp.task('component-css', function () {
   gulp.src( options.COMPONENT.manifest )
-    .pipe(watch({
-      name: "ComponentCSS"
-    }))
+    // .pipe(watch({
+    //   name: "ComponentCSS"
+    // }))
     .pipe(component.styles({
       configure: function (builder) {
         builder.use( sass )
@@ -144,9 +144,9 @@ gulp.task('bower', [ 'bowerCopy', 'bowerMerge' ]);
 // HTML -----------------------------------------------------------------------
 gulp.task('html', function () {
   gulp.src( options.HTML.src )
-    .pipe(watch({
-      name: "HTML"
-    }))
+    // .pipe(watch({
+    //   name: "HTML"
+    // }))
     .pipe(livereload());
 });
 
@@ -156,5 +156,13 @@ gulp.task('html', function () {
 // GLOBAL TASKS ---------------------------------------------------------------
 gulp.task('default', [ 'html', 'sass', 'coffee' ]);
 
+gulp.task('component', [ 'component-js', 'component-css' ]);
 
-module.exports = gulp;
+gulp.task('default', function () {
+  gulp.watch( options.HTML.src , ['html']);
+  gulp.watch( options.COFFEE.src , ['coffee']);
+  gulp.watch( [options.COMPONENT.manifest, options.COMPONENT.src] , ['component-js', 'component-css']);
+  // gulp.watch(options.IMAGE_SOURCE, ['images']);
+  gulp.watch( options.HTML.src , ['html']  );
+  gulp.watch( options.SASS.src , ['sass']  );
+});
