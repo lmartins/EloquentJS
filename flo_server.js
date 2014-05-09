@@ -1,31 +1,57 @@
-var flo = require('fb-flo');
-var fs = require('fs');
-var exec = require('child_process').exec;
 
-var server = flo('./', {
-  port: 8888,
-  dir: './',
-  glob: ['./build/**/*.js', './build/**/*.css']
-}, resolver);
+var flo = require('fb-flo'),
+    path = require('path');
 
-server.once('ready', function() {
-  console.log('Ready!');
-});
-
-function resolver(filepath, callback) {
-    exec('gulp', function (err) {
-      if (err) throw err;
-      if (filepath.match(/\.js$/)) {
-        callback({
-          resourceURL: 'build/build.js',
-          contents: fs.readFileSync('build/build.js').toString()
-        })
-      } else {
-        callback({
-          resourceURL: 'build/build.css',
-          contents: fs.readFileSync('build/build.css').toString()
-        })
-      }
+var server = flo(
+  "build",
+  {
+    port: 8888,
+    host: 'localhost',
+    verbose: false,
+    glob: [
+       // All JS files in `sourceDirToWatch` and subdirectories
+      'build/*.js',
+       // All CSS files in `sourceDirToWatch` and subdirectories
+      'build/*.css'
+    ]
+  },
+  function resolver(filepath, callback) {
+    // 1. Call into your compiler / bundler.
+    // 2. Assuming that `bundle.js` is your output file, update `bundle.js`
+    //    and `bundle.css` when a JS or CSS file changes.
+    callback({
+      resourceURL: 'bundle.js' + path.extname(filepath),
+      contents: fs.readFileSync(filepath)
     });
   }
-};
+);
+
+module.exports = server;
+
+// var flo  = require('fb-flo'),
+//     path = require('path');
+//     fs   = require('fs');
+//
+// function server() {
+//   flo(
+//     'build',
+//     {
+//       port: 8888,
+//       host: 'localhost',
+//       verbose: true,
+//       glob: [
+//       'build/**/*.js',
+//       'build/**/*.css'
+//       ]
+//     },
+//     function resolver(filepath, callback) {
+//       callback({
+//         resourceURL: filepath,
+//         reload: true,
+//         contents: fs.readFileSync(filepath)
+//       });
+//     }
+//   );
+//
+// }
+// module.exports = server;

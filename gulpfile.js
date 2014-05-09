@@ -1,19 +1,20 @@
 'use strict';
 
-var gulp = require('gulp'),
-  gutil      = require('gulp-util'),
-  sass       = require('gulp-sass'),
-  prefix     = require('gulp-autoprefixer'),
-  coffee     = require('gulp-coffee'),
-  coffeelint = require('gulp-coffeelint'),
-  component  = require('gulp-component'),
-  componentcoffee  = require('component-coffee'),
-  plumber    = require('gulp-plumber'),
-  changed    = require('gulp-changed'),
-  uglify     = require('gulp-uglify'),
-  livereload = require('gulp-livereload'),
-  watch      = require('gulp-watch'),
-  notify     = require('gulp-notify');
+var gulp            = require('gulp'),
+    gutil           = require('gulp-util'),
+    sass            = require('gulp-sass'),
+    prefix          = require('gulp-autoprefixer'),
+    coffee          = require('gulp-coffee'),
+    coffeelint      = require('gulp-coffeelint'),
+    component       = require('gulp-component'),
+    componentcoffee = require('component-coffee'),
+    plumber         = require('gulp-plumber'),
+    changed         = require('gulp-changed'),
+    uglify          = require('gulp-uglify'),
+    livereload      = require('gulp-livereload'),
+    watch           = require('gulp-watch'),
+    notify          = require('gulp-notify');
+    // floserver  = require("./flo_server.js");
 
 var options = {
 
@@ -165,4 +166,5 @@ gulp.task('default', function () {
   // gulp.watch(options.IMAGE_SOURCE, ['images']);
   gulp.watch( options.HTML.src , ['html']  );
   gulp.watch( options.SASS.src , ['sass']  );
+  // floserver()
 });
