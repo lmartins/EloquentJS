@@ -11,6 +11,7 @@ var gulp            = require('gulp'),
     plumber         = require('gulp-plumber'),
     changed         = require('gulp-changed'),
     uglify          = require('gulp-uglify'),
+    connect         = require('gulp-connect'),
     livereload      = require('gulp-livereload'),
     watch           = require('gulp-watch'),
     notify          = require('gulp-notify');
@@ -44,10 +45,18 @@ var options = {
     build  : "build/images",
   },
 
-  LIVE_RELOAD_PORT: 35729
+  LIVE_RELOAD_PORT: 8080
 
 }
 
+// SERVER ---------------------------------------------------------------------
+gulp.task('connect', function() {
+  connect.server({
+    root: './',
+    port: options.LIVE_RELOAD_PORT,
+    livereload: true
+  });
+});
 
 // SASS -----------------------------------------------------------------------
 gulp.task('sass', function() {
@@ -65,7 +74,7 @@ gulp.task('sass', function() {
     })
     .pipe(prefix( "last 1 version" ))
     .pipe(gulp.dest( options.SASS.build ))
-    .pipe(livereload());
+    .pipe(connect.reload());
 });
 
 
@@ -155,11 +164,11 @@ gulp.task('html', function () {
 
 
 // GLOBAL TASKS ---------------------------------------------------------------
-gulp.task('default', [ 'html', 'sass', 'coffee' ]);
+// gulp.task('default', [ 'html', 'sass', 'coffee' ]);
 
 gulp.task('component', [ 'component-js', 'component-css' ]);
 
-gulp.task('default', function () {
+gulp.task('watch', function () {
   gulp.watch( options.HTML.src , ['html']);
   gulp.watch( options.COFFEE.src , ['coffee']);
   gulp.watch( [options.COMPONENT.manifest, options.COMPONENT.src] , ['component-js', 'component-css']);
@@ -168,3 +177,5 @@ gulp.task('default', function () {
   gulp.watch( options.SASS.src , ['sass']  );
   // floserver()
 });
+
+gulp.task('default', ['connect', 'watch']);
