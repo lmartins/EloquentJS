@@ -12,10 +12,8 @@ var gulp            = require('gulp'),
     changed         = require('gulp-changed'),
     uglify          = require('gulp-uglify'),
     connect         = require('gulp-connect'),
-    // livereload      = require('gulp-livereload'),
     watch           = require('gulp-watch'),
     notify          = require('gulp-notify');
-    // floserver  = require("./flo_server.js");
 
 var options = {
 
@@ -61,9 +59,6 @@ gulp.task('connect', function() {
 // SASS -----------------------------------------------------------------------
 gulp.task('sass', function() {
   gulp.src( options.SASS.src )
-    // .pipe(watch({
-    //   name: "Sass"
-    // }))
     .pipe(plumber())
     .pipe(sass({
       outputStyle: 'compressed'
@@ -81,9 +76,6 @@ gulp.task('sass', function() {
 // COFFEESCRIPT ---------------------------------------------------------------
 gulp.task('coffee', function () {
   gulp.src( options.COFFEE.src )
-    // .pipe(watch({
-    //   name: "Coffee"
-    // }))
     .pipe(changed( options.COFFEE.build , { extension: '.js' }))
     .pipe(coffeelint())
     .pipe(coffeelint.reporter())
@@ -101,9 +93,6 @@ gulp.task('coffee', function () {
 // COMPONENT ------------------------------------------------------------------
 gulp.task('component-js', function () {
   gulp.src( options.COMPONENT.manifest )
-    // .pipe(watch({
-    //   name: "ComponentJS"
-    // }))
     .pipe(component.scripts({
       standalone: false,
       configure: function (builder) {
@@ -115,9 +104,6 @@ gulp.task('component-js', function () {
 
 gulp.task('component-css', function () {
   gulp.src( options.COMPONENT.manifest )
-    // .pipe(watch({
-    //   name: "ComponentCSS"
-    // }))
     .pipe(component.styles({
       configure: function (builder) {
         builder.use( sass )
@@ -154,17 +140,11 @@ gulp.task('bower', [ 'bowerCopy', 'bowerMerge' ]);
 // HTML -----------------------------------------------------------------------
 gulp.task('html', function () {
   gulp.src( options.HTML.src )
-    // .pipe(watch({
-    //   name: "HTML"
-    // }))
     .pipe(connect.reload());
 });
 
 
-
-
 // GLOBAL TASKS ---------------------------------------------------------------
-// gulp.task('default', [ 'html', 'sass', 'coffee' ]);
 
 gulp.task('component', [ 'component-js', 'component-css' ]);
 
