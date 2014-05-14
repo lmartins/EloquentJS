@@ -141,3 +141,26 @@ Grid::isInside = (point) ->
 Grid::moveValue = (from, to) ->
   @setValueAt to, @valueAt(from)
   @setValueAt from, undefined
+
+
+
+# Measuring Performance
+factorial = (num) ->
+  if num < 0
+    throw new Error "Number cannot be negative."
+
+  if num % 1 isnt 0
+    throw new Error "Number must be an integer."
+
+  if num is 0 or num is 1
+    return 1
+
+  num * factorial( num - 1 )
+
+
+console.time 'factorial test'
+i = 1
+while i < 100000
+  factorial 20
+  i++
+console.timeEnd 'factorial test'

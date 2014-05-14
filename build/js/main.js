@@ -1,5 +1,5 @@
 'use strict';
-var Dictionary, Grid, Point, Rabbit, chimera, colours, forEachIn, killerRabbit, thePlan;
+var Dictionary, Grid, Point, Rabbit, chimera, colours, factorial, forEachIn, i, killerRabbit, thePlan;
 
 Rabbit = function(adjective) {
   this.adjective = adjective;
@@ -124,6 +124,30 @@ Grid.prototype.moveValue = function(from, to) {
   this.setValueAt(to, this.valueAt(from));
   return this.setValueAt(from, void 0);
 };
+
+factorial = function(num) {
+  if (num < 0) {
+    throw new Error("Number cannot be negative.");
+  }
+  if (num % 1 !== 0) {
+    throw new Error("Number must be an integer.");
+  }
+  if (num === 0 || num === 1) {
+    return 1;
+  }
+  return num * factorial(num - 1);
+};
+
+console.time('factorial test');
+
+i = 1;
+
+while (i < 100000) {
+  factorial(20);
+  i++;
+}
+
+console.timeEnd('factorial test');
 
 /*
 //# sourceMappingURL=main.js.map
