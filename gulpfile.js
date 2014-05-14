@@ -12,7 +12,7 @@ var gulp            = require('gulp'),
     changed         = require('gulp-changed'),
     uglify          = require('gulp-uglify'),
     connect         = require('gulp-connect'),
-    livereload      = require('gulp-livereload'),
+    // livereload      = require('gulp-livereload'),
     watch           = require('gulp-watch'),
     notify          = require('gulp-notify');
     // floserver  = require("./flo_server.js");
@@ -45,15 +45,15 @@ var options = {
     build  : "build/images",
   },
 
-  LIVE_RELOAD_PORT: 8080
+  LIVE_RELOAD_PORT: 35728
 
 }
 
 // SERVER ---------------------------------------------------------------------
 gulp.task('connect', function() {
   connect.server({
-    root: './',
-    port: options.LIVE_RELOAD_PORT,
+    // root: './'
+    port: 8080,
     livereload: true
   });
 });
@@ -84,7 +84,7 @@ gulp.task('coffee', function () {
     // .pipe(watch({
     //   name: "Coffee"
     // }))
-    // .pipe(changed( options.COFFEE_BUILD , { extension: '.js' }))
+    .pipe(changed( options.COFFEE.build , { extension: '.js' }))
     .pipe(coffeelint())
     .pipe(coffeelint.reporter())
     .pipe(coffee({
@@ -93,7 +93,7 @@ gulp.task('coffee', function () {
       })
     .on('error', gutil.log))
     .pipe(gulp.dest( options.COFFEE.build ))
-    .pipe(livereload());
+    .pipe(connect.reload());
 });
 
 
@@ -157,7 +157,7 @@ gulp.task('html', function () {
     // .pipe(watch({
     //   name: "HTML"
     // }))
-    .pipe(livereload());
+    .pipe(connect.reload());
 });
 
 
